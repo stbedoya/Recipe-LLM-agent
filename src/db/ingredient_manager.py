@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class IngredientManager:
     def __init__(self, uri: str, db_name: str, collection_name: str):
         """
-        Initializes the MongoDB connection for managing user ingredient 
+        Initializes the MongoDB connection for managing user ingredient
         preferences.
 
         Args:
@@ -25,9 +25,9 @@ class IngredientManager:
             self.db = self.client[db_name]
             self.collection = self.db[collection_name]
             logger.info(
-                "Connected to database: %s, collection: %s", 
-                db_name, 
-                collection_name
+                "Connected to database: %s, collection: %s",
+                db_name,
+                collection_name,
             )
             self.collection.create_index("user_id", unique=True)
         except errors.ConnectionFailure as e:
@@ -44,11 +44,11 @@ class IngredientManager:
         Saves or updates a user's ingredient preferences in the database.
 
         Args:
-            preferences (UserIngredientPreferences): 
+            preferences (UserIngredientPreferences):
             User ingredient preferences, including user ID and ingredient list.
 
         Returns:
-            Dict[str, str]: A dictionary indicating the operation status 
+            Dict[str, str]: A dictionary indicating the operation status
             (inserted/updated) and the user ID.
         """
         try:
@@ -84,11 +84,11 @@ class IngredientManager:
         Ensures that no ingredient has contradictory like/dislike preferences.
 
         Args:
-            ingredients (List[IngredientPreference]): 
+            ingredients (List[IngredientPreference]):
                 A list of ingredient preferences.
 
         Raises:
-            ValueError: 
+            ValueError:
                 If an ingredient has conflicting like/dislike preferences.
         """
         seen_ingredients: Dict[str, bool] = {}

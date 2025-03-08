@@ -16,7 +16,7 @@ Follow these steps to set up and run the Recipe Generator locally.
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/stbedoya/recipe_agent.git
 cd recipe_agent
 ```
 

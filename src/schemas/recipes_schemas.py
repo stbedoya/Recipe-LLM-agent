@@ -28,5 +28,6 @@ class RecipeCollection(BaseModel):
         ..., description="A dictionary mapping recipe keys to Recipe objects"
     )
 
+
 class UserRequest(BaseModel):
     user_id: str

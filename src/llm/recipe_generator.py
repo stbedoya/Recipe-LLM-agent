@@ -5,11 +5,12 @@ from src.schemas.recipes_schemas import Recipe
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class RecipeGenerator:
     def __init__(self, llm, parser, prompt_template):
         """
         Initializes the RecipeGenerator with LLM, parser, and prompt template.
-        
+
         Args:
             llm (LLM): The LLM interface for generating responses.
             parser (RecipeParser): The parser for converting response text into Recipe objects.
@@ -30,7 +31,7 @@ class RecipeGenerator:
         self,
         ingredients: List[str],
         liked_ingredients: List[str],
-        disliked_ingredients: List[str]
+        disliked_ingredients: List[str],
     ) -> List[Recipe]:
         """
         Generates structured recipes based on user preferences.
@@ -43,9 +44,13 @@ class RecipeGenerator:
         Returns:
             List[Recipe]: List of generated recipes.
         """
-        self._validate_ingredients(ingredients, liked_ingredients, disliked_ingredients)
+        self._validate_ingredients(
+            ingredients, liked_ingredients, disliked_ingredients
+        )
 
-        prompt_text = self._format_prompt(ingredients, liked_ingredients, disliked_ingredients)
+        prompt_text = self._format_prompt(
+            ingredients, liked_ingredients, disliked_ingredients
+        )
 
         try:
             response_text = await self._invoke_llm(prompt_text)
@@ -55,7 +60,10 @@ class RecipeGenerator:
             return []
 
     def _format_prompt(
-        self, available_ingredients: List[str], liked_ingredients: List[str], disliked_ingredients: List[str]
+        self,
+        available_ingredients: List[str],
+        liked_ingredients: List[str],
+        disliked_ingredients: List[str],
     ) -> str:
         """
         Formats the prompt with provided ingredients and preferences.
@@ -87,10 +95,16 @@ class RecipeGenerator:
         """
         try:
             response = await self.llm.generate_response(prompt_text)
-            return response.content if hasattr(response, "content") else str(response)
+            return (
+                response.content
+                if hasattr(response, "content")
+                else str(response)
+            )
         except AttributeError as e:
             logger.error(f"Invalid response from LLM: {e}")
-            raise ValueError("LLM response does not have expected 'content' attribute")
+            raise ValueError(
+                "LLM response does not have expected 'content' attribute"
+            )
         except Exception as e:
             logger.error(f"Error invoking LLM: {e}")
             raise ValueError("Error invoking LLM")
@@ -112,7 +126,10 @@ class RecipeGenerator:
             return []
 
     def _validate_ingredients(
-        self, ingredients: List[str], liked_ingredients: List[str], disliked_ingredients: List[str]
+        self,
+        ingredients: List[str],
+        liked_ingredients: List[str],
+        disliked_ingredients: List[str],
     ) -> None:
         """
         Validates the ingredients input to ensure it's not empty or invalid.
@@ -127,9 +144,13 @@ class RecipeGenerator:
         """
         if not all(isinstance(ingredient, str) for ingredient in ingredients):
             raise ValueError("All ingredients must be strings")
-        if not all(isinstance(ingredient, str) for ingredient in liked_ingredients):
+        if not all(
+            isinstance(ingredient, str) for ingredient in liked_ingredients
+        ):
             raise ValueError("All liked ingredients must be strings")
-        if not all(isinstance(ingredient, str) for ingredient in disliked_ingredients):
+        if not all(
+            isinstance(ingredient, str) for ingredient in disliked_ingredients
+        ):
             raise ValueError("All disliked ingredients must be strings")
 
         if not ingredients:

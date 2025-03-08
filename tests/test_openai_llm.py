@@ -15,26 +15,28 @@ class TestOpenAILLM(unittest.IsolatedAsyncioTestCase):
             model_name=self.model_name,
             api_key=self.api_key,
             temperature=self.temperature,
-            max_tokens=self.max_tokens
+            max_tokens=self.max_tokens,
         )
 
     @patch("src.llm.openai_llm.ChatOpenAI.__init__")
     async def test_initialization(self, MockChatOpenAI_init):
         """Test that the OpenAILLM class is initialized correctly."""
-        
+
         MockChatOpenAI_init.return_value = None
-        
+
         openai_llm_instance = OpenAILLM(
             model_name=self.model_name,
             api_key=self.api_key,
             temperature=self.temperature,
-            max_tokens=self.max_tokens
+            max_tokens=self.max_tokens,
         )
 
         self.assertEqual(openai_llm_instance.model_name, self.model_name)
         self.assertEqual(openai_llm_instance.temperature, self.temperature)
         self.assertEqual(openai_llm_instance.max_tokens, self.max_tokens)
-        self.assertEqual(openai_llm_instance.api_key.get_secret_value(), "dummy_api_key")
+        self.assertEqual(
+            openai_llm_instance.api_key.get_secret_value(), "dummy_api_key"
+        )
 
     @patch("src.llm.openai_llm.ChatOpenAI.invoke")
     async def test_generate_response_success(self, MockInvoke):

@@ -54,3 +54,11 @@ To achieve this, I prompt the model to generate five recipe suggestions. The mod
 - The model could be fine-tuned to reflect a specific tone that aligns with the company’s branding (e.g., friendly, professional, casual). This would make the recipe suggestions more consistent and personalized to the company's style.
 - The model could be improved to take into account additional user preferences, such as dietary restrictions (e.g., gluten-free, vegan) or preferred meal types (e.g., breakfast, dinner), to generate more relevant recipes.
 - The model could be fine-tuned to better handle complex recipes with multiple steps and cooking techniques, ensuring the instructions are clear and easy to follow.
+
+
+#### 3. Other areas for futher improvement/future work:
+- Implement full unit testing and design integration tests, including async test cases for asynchronous functions.
+- Address Flake8 E501 errors.
+- Integrate the pipeline and dataset for LLM testing, optimizing async data fetching and processing.
+- Improve API key configuration and move model-related variables to the config file.
+- Integrate the pipeline and dataset for LLM testing.

@@ -1,5 +1,5 @@
 import unittest
-from pymongo import MongoClient
+from unittest.mock import MagicMock
 from src.db.ingredient_manager import IngredientManager
 from src.schemas.ingredient_schemas import (
     Ingredient,
@@ -11,23 +11,27 @@ from src.schemas.ingredient_schemas import (
 class TestIngredientManager(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        """Setup a test database connection once for the class."""
-        cls.client = MongoClient("mongodb://localhost:27017/")
-        cls.db = cls.client["test_database"]
-        cls.collection = cls.db["test_ingredients"]
-        cls.collection.drop()
+        """Setup mock database connection."""
+        cls.mock_client = MagicMock()
+        cls.mock_db = MagicMock()
+        cls.mock_collection = MagicMock()
+
+        cls.mock_client.__getitem__.return_value = cls.mock_db
+        cls.mock_db.__getitem__.return_value = cls.mock_collection
+
         cls.manager = IngredientManager(
             "mongodb://localhost:27017/", "test_database", "test_ingredients"
         )
 
+        cls.manager.collection = cls.mock_collection
+
     @classmethod
     def tearDownClass(cls):
-        """Cleanup: Drop the test collection after tests run."""
-        cls.db.drop_collection("test_ingredients")
-        cls.client.close()
+        """Clean up mocks."""
+        cls.mock_client.close()
 
     def test_save_preferences(self):
-        """Test saving a user's ingredient preferences."""
+        """Test saving a user's ingredient preferences with mocked database."""
         data = UserPreferences(
             user_id="USR-12345",
             client_name="Test Client",
@@ -43,12 +47,29 @@ class TestIngredientManager(unittest.TestCase):
             ],
         )
 
+        self.mock_collection.insert_one.return_value = MagicMock(
+            inserted_id="USR-12345"
+        )
+
         result = self.manager.save_preferences(data)
 
         self.assertIn(
             result["status"], ["inserted", "updated"], "Unexpected save status"
         )
         self.assertEqual(result["user_id"], "USR-12345", "User ID mismatch")
+
+        saved_data_mock = {
+            "user_id": "USR-12345",
+            "ingredients": [
+                {"name": "onions", "like": True},
+                {"name": "chicken", "like": True},
+            ],
+            "available_ingredients": [
+                {"name": "tomato", "quantity": "2", "unit": "pcs"},
+                {"name": "garlic", "quantity": "5", "unit": "cloves"},
+            ],
+        }
+        self.mock_collection.find_one.return_value = saved_data_mock
 
         saved_data = self.manager.collection.find_one({"user_id": "USR-12345"})
         self.assertIsNotNone(saved_data, "Data was not saved to the database")
@@ -64,7 +85,7 @@ class TestIngredientManager(unittest.TestCase):
         )
 
     def test_conflicting_preferences(self):
-        """Test that contradictory preferences are rejected."""
+        """Test that contradictory preferences are rejected with mocked database."""
         data = UserPreferences(
             user_id="USR-67890",
             client_name="Test Client",

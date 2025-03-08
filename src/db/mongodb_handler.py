@@ -22,7 +22,8 @@ class MongoDBHandler:
             self.db = self.client[db_name]
             self.collection = self.db[collection_name]
             logger.info(
-                f"Connected to database: {db_name}, collection: {collection_name}")
+                f"Connected to database: {db_name}, collection: {collection_name}"
+            )
         except Exception as e:
             logger.error(f"Unexpected error connecting to MongoDB: {e}")
             raise
@@ -43,12 +44,16 @@ class MongoDBHandler:
                 for item in data:
                     await self._validate_document(item)
                 insert_many_result = await self.collection.insert_many(data)
-                logger.info(f"Inserted {len(insert_many_result.inserted_ids)} documents.")
+                logger.info(
+                    f"Inserted {len(insert_many_result.inserted_ids)} documents."
+                )
                 return insert_many_result.inserted_ids
             else:
                 await self._validate_document(data)
                 insert_one_result = await self.collection.insert_one(data)
-                logger.info(f"Inserted document with ID: {insert_one_result.inserted_id}")
+                logger.info(
+                    f"Inserted document with ID: {insert_one_result.inserted_id}"
+                )
                 return insert_one_result.inserted_id
         except errors.DuplicateKeyError:
             logger.error("Duplicate user_id detected. Ensure uniqueness.")
@@ -86,7 +91,9 @@ class MongoDBHandler:
             logger.error(f"Unexpected error fetching data: {e}")
             raise
 
-    async def update_data(self, query: Dict[str, Any], new_values: Dict[str, Any]) -> int:
+    async def update_data(
+        self, query: Dict[str, Any], new_values: Dict[str, Any]
+    ) -> int:
         """Update documents that match the query asynchronously.
 
         Args:
@@ -99,7 +106,9 @@ class MongoDBHandler:
         if not query:
             raise ValueError("Update query cannot be empty.")
         try:
-            result = await self.collection.update_many(query, {"$set": new_values})
+            result = await self.collection.update_many(
+                query, {"$set": new_values}
+            )
             logger.info(f"Updated {result.modified_count} documents.")
             return result.modified_count
         except errors.PyMongoError as e:

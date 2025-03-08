@@ -1,5 +1,4 @@
 import logging
-from pydantic import SecretStr
 from langchain_openai import ChatOpenAI
 
 
@@ -47,7 +46,7 @@ class OpenAILLM:
             str: The generated response from the model.
         """
         try:
-            return  self.llm.invoke(prompt, **kwargs)
+            return self.llm.invoke(prompt, **kwargs)
         except Exception as e:
             logging.error(f"OpenAI API request failed: {e}")
             raise ValueError(f"Failed to generate response from OpenAI: {e}")

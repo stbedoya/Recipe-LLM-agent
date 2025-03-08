@@ -1,4 +1,3 @@
-import asyncio
 import uvicorn
 import logging
 from config import settings
@@ -41,9 +40,7 @@ async def insert_user_preferences(preferences: UserPreferences):
     )
 
     try:
-        inserted_id = await mongo_handler.insert_data(
-            preferences.dict()
-        )
+        inserted_id = await mongo_handler.insert_data(preferences.model_dump())
         logger.info(f"Data inserted with ID: {inserted_id}")
         return {"message": f"User preferences inserted with ID: {inserted_id}"}
 
@@ -53,6 +50,7 @@ async def insert_user_preferences(preferences: UserPreferences):
             status_code=500,
             detail=f"Failed to insert user preferences: {str(e)}",
         )
+
 
 @app.post("/get_user_preferences/")
 async def get_user_preferences(request: UserRequest):
@@ -133,6 +131,7 @@ async def generate_recipes_for_user(request: UserRequest):
             inputs["disliked_ingredients"],
         )
         logger.info(f"Recipes generated: {output}")
+        logger.info(f"Type recipes generated: {type(output)}")
 
         recipe_validator = RecipeValidator(
             disliked_ingredients=disliked_ingredients,
