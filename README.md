@@ -9,18 +9,18 @@ The **Recipe Generator** is a FastAPI-based application that generates recipes u
 3. **Configure the Application**: Adjust configurations in the `config.py` file, such as OPEN AI API key.
 4. **Run the Application**: Start the FastAPI app using Uvicorn and access the API via `http://localhost:8000`.
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these steps to set up and run the Recipe Generator locally.
 
-### 1️⃣ Clone the Repository
+### Clone the Repository
 
 ```bash
 git clone https://github.com/stbedoya/recipe_agent.git
 cd recipe_agent
 ```
 
-### 2️⃣ Start MongoDB (Linux)
+### Start MongoDB (Linux)
 
 Ensure that you have MongoDB installed and running. You can start MongoDB with:
 
@@ -28,7 +28,7 @@ Ensure that you have MongoDB installed and running. You can start MongoDB with:
 sudo systemctl start mongod
 ```
 
-### 3️⃣ Configure OpenAI API Key
+### Configure OpenAI API Key
 
 Update your config file (e.g., `config.py` or `.env`) with your OpenAI API key:
 
@@ -42,7 +42,7 @@ Or, if using an `.env` file:
 OPENAI_API_KEY=your-openai-api-key
 ```
 
-### 4️⃣ Install Dependencies
+### Install Dependencies
 
 Ensure you have Python 3.11+ installed, then install dependencies:
 
@@ -52,7 +52,7 @@ source myenv/bin/activate  # On Windows, use `myenv\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-### 5️⃣ Run the API
+### Run the API
 
 Start the FastAPI application using Uvicorn:
 
