@@ -60,7 +60,7 @@ Start the FastAPI application using Uvicorn:
 uvicorn src.api.routers:app --reload
 ```
 
-### 6️⃣ Test the API
+### Test the API
 
 Once running, access the interactive documentation at:
 
