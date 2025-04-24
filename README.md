@@ -1,7 +1,49 @@
-# Recipe Generator
+# Recipe LLM agent Service
 
-The **Recipe Generator** is a FastAPI-based application that generates recipes using OpenAI's API and validates them against predefined ingredient constraints. The application stores and retrieves data using MongoDB.
+A toy backend service that exposes a REST API for managing ingredient preferences and generating personalized recipes using a Large Language Model (LLM). Built to demonstrate production-quality Python backend skills and the ability to effectively leverage LLMs for data synthesis and transformation.
 
+## 🚀 Features
+
+### 1. Ingredient Preferences Management
+
+- **CRUD API** to manage user ingredient preferences.
+- **Preferences** indicate whether an ingredient is liked or disliked.
+- **Persistence**: All preferences are stored in a **MongoDB** database.
+- **Validation**:
+  - Input is validated using **Pydantic** models.
+  - Contradictory preferences (e.g., liking and disliking the same ingredient) are not allowed.
+
+### 2. Recipe Generation
+
+A core endpoint for generating personalized recipes:
+
+- Accepts a list of **available ingredients**.
+- Leverages stored user preferences and an **LLM** to generate appropriate recipes.
+- Filters out recipes that contain **disliked ingredients**.
+- Returns up to **5 structured recipes** in JSON format, each including:
+  - Recipe name
+  - Ingredients list (with quantities)
+  - Step-by-step cooking instructions
+  - Estimated cooking time
+  - Difficulty level
+
+### 3. Quality Assurance
+
+- **LLM Response Validation**:
+  - Ensures response follows the expected structure.
+  - Checks that no disliked ingredients appear in recipes.
+  - Verifies recipe completeness and culinary coherence.
+- Handles **edge cases** like:
+  - Conflicting preferences
+  - Insufficient ingredients
+
+##  Tech Stack
+
+- **Python** (FastAPI for the REST API)
+- **Pydantic** for request/response validation
+- **MongoDB** for data persistence 
+- **LLM** integration via OpenAI API
+  
 ## How It Works
 
 1. **Clone the Repository**: You’ll need to download the project files to your local machine.
