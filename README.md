@@ -2,7 +2,7 @@
 
 A toy backend service that exposes a REST API for managing ingredient preferences and generating personalized recipes using a Large Language Model (LLM). Built to demonstrate production-quality Python backend skills and the ability to effectively leverage LLMs for data synthesis and transformation.
 
-## 🚀 Features
+## Features
 
 ### 1. Ingredient Preferences Management
 
